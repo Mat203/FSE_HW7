@@ -34,6 +34,7 @@ app.MapGet("/version", () => new
 Setup2ndAssignmentsEndpoints();
 Setup3rdAssignmentsEndpoints();
 Setup4thAssignmentsEndpoints();
+Setup7thAssignmentEndpoints();
 
 app.UseSwagger();
 app.UseSwaggerUI();
@@ -125,6 +126,21 @@ void Setup4thAssignmentsEndpoints()
             return Results.NotFound(new { userId });
         worker.Forget(userId);
         return Results.Ok();
+    });
+}
+
+void Setup7thAssignmentEndpoints()
+{
+    app.MapGet("/api/report/{reportName}", (string reportName, DateTimeOffset from, DateTimeOffset to) =>
+    {
+        var reportData = worker.GenerateReportData(reportName, from, to);
+        var globalMetrics = allUsersTransformer.CalculateGlobalMetrics();
+        var response = new
+        {
+            users = reportData,
+            dailyAverage = globalMetrics.DailyAverage,
+        };
+        return Results.Json(response);
     });
 }
 

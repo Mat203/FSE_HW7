@@ -1,11 +1,18 @@
 namespace LastSeenDemo;
 
+public class GlobalMetrics
+    {
+        public int DailyAverage { get; set; }
+    }
+
 public class AllUsersTransformer
 {
     private readonly IUserTransformer _transformer;
-    public AllUsersTransformer(IUserTransformer transformer)
+    private readonly IOnlineDetector _detector;
+    public AllUsersTransformer(IUserTransformer transformer, IOnlineDetector detector) 
     {
         _transformer = transformer;
+        _detector = detector; 
     }
 
     public void Transform(IEnumerable<User> allUsers, List<Guid> onlineUsers, Dictionary<Guid, List<UserTimeSpan>> result)
@@ -29,5 +36,15 @@ public class AllUsersTransformer
                 onlineUsers.Remove(user.UserId);
             }
         }
+    }
+
+    public GlobalMetrics CalculateGlobalMetrics()
+    {
+        var globalMetrics = new GlobalMetrics
+        {
+            DailyAverage = _detector.CalculateGlobalDailyAverageForAllUsers(), 
+        };
+
+        return globalMetrics;
     }
 }

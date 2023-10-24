@@ -17,6 +17,7 @@ public class OnlineDetector : IOnlineDetector
     public OnlineDetector(IDateTimeProvider dateTimeProvider)
     {
         _dateTimeProvider = dateTimeProvider;
+
     }
 
     public bool Detect(List<UserTimeSpan> data, DateTimeOffset date)
@@ -138,6 +139,22 @@ public class OnlineDetector : IOnlineDetector
 
         return totalTime / totalDays;
     }
+
+    public int CalculateGlobalDailyAverageForAllUsers(Dictionary<Guid, List<UserTimeSpan>> userTimeSpans)
+    {
+        double totalDailyAverage = 0;
+
+        foreach (var user in userTimeSpans.Values)
+        {
+            totalDailyAverage += CalculateDailyAverageForUser(user);
+        }
+
+        int globalDailyAverage = (int)Math.Round(totalDailyAverage);
+
+        return globalDailyAverage;
+    }
+
+
 }
 
 public class Predictor
