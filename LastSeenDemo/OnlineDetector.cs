@@ -9,6 +9,7 @@ public interface IOnlineDetector
     double CalculateTotalTimeForUser(List<UserTimeSpan> value, DateTimeOffset from, DateTimeOffset to);
     double CalculateDailyAverageForUser(List<UserTimeSpan> user);
     double CalculateWeeklyAverageForUser(List<UserTimeSpan> user);
+    int CalculateGlobalDailyAverageForAllUsers(Dictionary<Guid, List<UserTimeSpan>> userTimeSpans);
 }
 
 public class OnlineDetector : IOnlineDetector
