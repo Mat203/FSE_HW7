@@ -38,11 +38,11 @@ public class AllUsersTransformer
         }
     }
 
-    public GlobalMetrics CalculateGlobalMetrics()
+    public GlobalMetrics CalculateGlobalMetrics(Dictionary<Guid, List<UserTimeSpan>> userTimeSpans)
     {
         var globalMetrics = new GlobalMetrics
         {
-            DailyAverage = _detector.CalculateGlobalDailyAverageForAllUsers(), 
+            DailyAverage = _detector.CalculateGlobalDailyAverageForAllUsers(userTimeSpans), 
         };
 
         return globalMetrics;
